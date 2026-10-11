@@ -2,11 +2,16 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 
 import App from "./App";
+import EmberHome from "./EmberHome";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { registerServiceWorker } from "./lib/serviceWorker";
 import "./styles.css";
 
 const rootElement = document.getElementById("root");
+const isApplicationRoute = window.location.pathname === "/app" || window.location.pathname.startsWith("/app/");
+
+document.documentElement.lang = isApplicationRoute ? "es" : "en";
+document.title = isApplicationRoute ? "Lindero" : "EMBER — Ideas made extraordinary";
 
 if (!rootElement) {
   throw new Error("No se encontró el elemento #root en index.html");
@@ -24,7 +29,7 @@ createRoot(rootElement).render(
     {/* The outermost net: if a render error escapes every panel-level boundary,
         this shows a full-page message with a reload instead of a blank tab. */}
     <ErrorBoundary variant="page">
-      <App />
+      {isApplicationRoute ? <App /> : <EmberHome />}
     </ErrorBoundary>
   </StrictMode>,
 );
